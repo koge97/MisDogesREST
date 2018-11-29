@@ -1,0 +1,91 @@
+{% load staticfiles %}
+<html>
+    <head>
+         <!--Hoja de estilos-->
+        <link rel="stylesheet" href="{% static 'css/maqueta.css' %}">
+        <!--Prefix-->
+        <script src="{% static 'js/prefix.js' %}" type="test/javascript"></script>
+    </head>
+    <body>
+            <!-- Division del contenedor de la pagina -->
+            <div class=contenedor>
+            <!-- Header, parte superior de la pagina -->
+            <header>
+                <!-- Logo -->
+                <div class=logo>
+                    <img alt=""src="{% static 'images/logo.png' %}" width=150>
+                    <a href=#>MIS PERRIS</a>
+                </div>
+                <!-- Menu -->
+                <nav>
+                    <a href=/>Inicio</a>
+                    <a href=/#>Quienes Somos</a>
+                    <a href=/#>Servicios</a>
+                    <a href=/#>Contacto</a>
+                </nav>
+                {% block header %}
+                {% endblock %}
+                <!-- Si el usuario esta autenticado y es staff muestra un menu, si no es staff muestra otro y si no esta logeado otro -->
+                {% if request.user.is_authenticated %}
+                {% if user.is_staff %}
+                    <nav> 
+                        <a href="/mngrusr/">Gestionar Usuarios</a>
+                        <a href="/addusradmin/">Añadir Usuarios</a>
+                        <a href="/regpet/">Registrar Mascota</a>
+                        <a href="/mngrpet/">Gestionar Mascotas</a>
+                        <a href="/salir/">Cerrar Sesión</a>
+                    </nav>
+                {% else %}
+                    <nav>
+                        <a href="/adoptpet/">Adoptar</a>
+                        <a href="/salir/">Cerrar Sesión</a>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <nav>
+                    <a href="/regusr/">Registrarse</a>
+                    <a href="/login/">Ingresar</a>
+                </nav>
+            {% endif %}
+            </header>
+            <!-- ^ Fin del Header -->
+            <!-- Division Main1 Primer Articulo -->
+            <div class=main>
+                {% block principal %}
+                {% endblock %}
+            </div>
+            <footer>
+            {% block footer %}
+            {% endblock %}
+                <!-- Cuadro con Logos de Validaciones CSS y HTML -->
+                <div class=validado>
+                <p>Desarrollo Web y Mobile DWY4101-003D Manuel Yavar</p>
+                <p>
+                <a href="https://validator.w3.org/nu/?doc=http%3A%2F%2F200.111.90.172%2F">
+                <img alt="¡HTML Válido!"src=https://www.w3.org/Icons/valid-html401 style=border:0;width:88px;height:31px>
+                </a>
+                <a href=http://jigsaw.w3.org/css-validator/check/referer>
+                <img alt="¡CSS Válido!"src=http://jigsaw.w3.org/css-validator/images/vcss style=border:0;width:88px;height:31px>
+                </a>
+                </p>
+                </div>
+                <!-- Fin del Pie de Pagina -->
+            </footer>
+            </div>
+    </body>
+    <script>
+        $(document).ready(function(){
+            $.ajax({url: "http://localhost:8000/API/pet",  success: function(result){
+                $.each(result,function(i,items){
+                    $("#listaPerros").append('<tr><td>'+ result[i].nombre +'</td>'+
+                                                '<td>'+ result[i].raza +'</td>'+
+                                                '<td>'+ result[i].descripcion +'</td>'+
+                                                '<td><img src="'+ result[i].pic +'"width="25%" height="50%"></td>'+
+                                                '<td>'+ result[i].estado +'</td>'+
+                                                '<td><a href="http://localhost:8000/borrarPerro/'+ result[i].codigoMascota +'">Eliminar</a></td></tr>');// Agrega el Botón para Borrar al Perro
+               });
+            }});
+        })
+        
+    </script>
+</html>

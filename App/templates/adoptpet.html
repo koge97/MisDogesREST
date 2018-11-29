@@ -1,0 +1,19 @@
+{% extends 'maqueta.html' %}
+{% load staticfiles %}
+{% block principal %}
+<link rel="stylesheet" href="{% static 'css/tabla.css' %}">
+    <div class="tabla">
+        <h1>Lista de Perros</h1>
+        <!-- Si el Usuario Logueado es Admin, entonces muestra estos campos en la Tabla  -->
+            <table id="listaPerros">
+              <tr>
+                <td id="top">Nombre</td>
+                <td id="top">Raza</td>
+                <td id="top">Descripcion</td>
+                <td id="top">Foto</td>
+                <td id="top">Estado</td>
+                <td id="top">Acciones</td>
+              </tr>
+            </table>
+    </div>
+{% endblock %}
